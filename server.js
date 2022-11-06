@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 app.use(express.json());
+
 const database = {
   users: [
     {
@@ -24,7 +25,7 @@ const database = {
 };
 
 app.get("/", (req, res) => {
-  res.send(`<h1>this is working</h1>`);
+  res.send(database.users);
 });
 
 app.post("/signin", (req, res) => {
@@ -36,6 +37,19 @@ app.post("/signin", (req, res) => {
   } else {
     res.status(400).json("error logging in");
   }
+});
+
+app.post("/register", (req, res) => {
+  const { email, name, password } = req.body;
+  database.users.push({
+    id: "125",
+    name: name,
+    email: email,
+    password: password,
+    entries: 0,
+    joined: new Date(),
+  });
+  res.json(database.users[database.users.length - 1]);
 });
 
 app.listen(3001, () => {
