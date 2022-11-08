@@ -2,6 +2,22 @@ const express = require("express");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const knex = require("knex");
+const Clarifai = require("clarifai");
+const { json } = require("express");
+const app = express();
+
+const api = new Clarifai.App({
+  apiKey: "396f265e809b41d2bfb2fb8a744a989f",
+});
+
+const handleApiCall = (req, res) => {
+  api.models
+    .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
+    .then((data) => {
+      res.json(data);
+    })
+    .catch((err) => res.status(400).json("unable to work with API"));
+};
 
 const db = knex({
   client: "pg",
@@ -17,8 +33,6 @@ const db = knex({
 // db.select("*")
 //   .from("users")
 //   .then((data) => console.log(data));
-
-const app = express();
 
 app.use(express.json());
 app.use(cors());
@@ -108,6 +122,11 @@ app.put("/image", (req, res) => {
     })
     .catch((err) => res.status(400).json("unable to get entries"));
 });
+
+app.post("/imageurl", (req, res) => {
+  handleApiCall(req, res);
+});
+
 app.listen(3001, () => {
   console.log("server is running on port 3001");
 });
