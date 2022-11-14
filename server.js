@@ -2,7 +2,6 @@ const express = require("express");
 const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const knex = require("knex");
-// const Clarifai = require("clarifai");
 const { json } = require("express");
 const app = express();
 
@@ -20,7 +19,6 @@ metadata.set("authorization", "Key 6c19a20eb81e4d6ba8876ab597781e2c");
 const handleApiCall = (req, res) => {
   stub.PostModelOutputs(
     {
-      // This is the model ID of a publicly available General model. You may use any other public or custom model ID.
       model_id: "a403429f2ddf4b49b307e318f00e528b",
       inputs: [{ data: { image: { url: req.body.input } } }],
     },
@@ -48,13 +46,6 @@ const handleApiCall = (req, res) => {
       res.json(response);
     }
   );
-
-  // api.models
-  //   .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
-  //   .then((data) => {
-  //     res.json(data);
-  //   })
-  //   .catch((err) => res.status(400).json("unable to work with API"));
 };
 
 const db = knex({
@@ -67,10 +58,6 @@ const db = knex({
     database: "catchface",
   },
 });
-
-// db.select("*")
-//   .from("users")
-//   .then((data) => console.log(data));
 
 app.use(express.json());
 app.use(cors());
