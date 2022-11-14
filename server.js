@@ -3,9 +3,6 @@ const bcrypt = require("bcrypt-nodejs");
 const cors = require("cors");
 const knex = require("knex");
 const { json } = require("express");
-const app = express();
-app.use(express.json());
-app.use(cors());
 
 const { ClarifaiStub, grpc } = require("clarifai-nodejs-grpc");
 
@@ -57,6 +54,10 @@ const db = knex({
     ssl: true,
   },
 });
+
+const app = express();
+app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("it is working!");
