@@ -51,11 +51,8 @@ const handleApiCall = (req, res) => {
 const db = knex({
   client: "pg",
   connection: {
-    host: "127.0.0.1", //localhost
-    port: 5432,
-    user: "postgres",
-    password: "test",
-    database: "catchface",
+    connectionString: process.env.DATABASE_URL, //localhost
+    ssl: true,
   },
 });
 
